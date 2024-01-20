@@ -2,7 +2,9 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String userName=loginName.getText().toString();
                 String Password=loginPassword.getText().toString();
+                Database db =new Database(getApplicationContext(),"anihelp",null,1);
 
 
                 if (userName.length()==0 || Password.length()==0)
@@ -49,7 +52,21 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(getApplicationContext(),"Login Successful",Toast.LENGTH_SHORT).show();
+                    if (db.login(userName,Password)==1)
+                    {
+                        Toast.makeText(getApplicationContext(),"Login Successful",Toast.LENGTH_SHORT).show();
+
+                        SharedPreferences sharedpreferences =getSharedPreferences("shared_pres", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor= sharedpreferences.edit();
+                        editor.putString("username",userName);
+                        editor.apply();
+                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(),"Invalid Username And Password",Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
         });

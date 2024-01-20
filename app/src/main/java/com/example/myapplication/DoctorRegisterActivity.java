@@ -40,6 +40,8 @@ public class DoctorRegisterActivity extends AppCompatActivity {
                 String ph=phone.getText().toString();
                 String p=password.getText().toString();
                 String cp=confirmPassword.getText().toString();
+                Database db =new Database(getApplicationContext(),"anihelp",null,1);
+
 
 
                 if (name.length()==0 || email.length()==0 ||phone.length()==0 || password.length()==0 || confirmPassword.length()==0)
@@ -52,6 +54,7 @@ public class DoctorRegisterActivity extends AppCompatActivity {
                     {
                         if(isValid(p))
                         {
+                            db.register(n,e,p);
                             Toast.makeText(getApplicationContext(),"registered successfully",Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(DoctorRegisterActivity.this, LoginActivity.class));
                         }
